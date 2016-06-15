@@ -1,0 +1,8 @@
+test:
+    override:
+        - make
+        - make test
+
+dependencies:
+    pre:
+        - ls
