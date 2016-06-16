@@ -16,8 +16,8 @@ dependencies:
         - cd ../ && git clone git@github.com:ARMmbed/mbed-tls-sample.git
         - cd ../mbed-tls-sample/ && mbed deploy
         # Import mbedtls current revision
-        - ln -s ../../../../../../mbedtls/ ../mbed-tls-sample/mbed-os/core/mbedtls/importer/TARGET_IGNORE/mbedtls
-        - cd ../mbed-tls-sample/mbed-os/core/mbedtls/importer/ && make
+        - ln -s ../../../../../../mbedtls/ ../mbed-tls-sample/mbed-os/features/mbedtls/importer/TARGET_IGNORE/mbedtls
+        - cd ../mbed-tls-sample/mbed-os/features/mbedtls/importer/ && make
     override:
         # Install the missing python packages
         - cd ../mbed-tls-sample/mbed-os && sudo -H pip install -r requirements.txt
