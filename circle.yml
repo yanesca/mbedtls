@@ -14,7 +14,9 @@ dependencies:
         - sudo apt-get -y install gcc-arm-none-eabi=4.9.3.2015q3-1precise1
         # Get the sample application
         - cd ../ && git clone git@github.com:ARMmbed/mbed-tls-sample.git
-        - cd ../mbed-tls-sample/ && mbed deploy
+        # Get mbed-os
+        - cd ../mbed-tls-sample/ && rm mbed-os.lib
+        - cd ../mbed-tls-sample/ && mbed add https://github.com/ARMmbed/mbed-os.git
         # Import mbedtls current revision
         - ln -s ../../../../../../mbedtls/ ../mbed-tls-sample/mbed-os/features/mbedtls/importer/TARGET_IGNORE/mbedtls
         - cd ../mbed-tls-sample/mbed-os/features/mbedtls/importer/ && make
