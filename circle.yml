@@ -1,7 +1,7 @@
 test:
     override:
         #- cd ../mbed-tls-sample && mbed compile -m K64F -t GCC_ARM -c -j0
-        ls
+        - ls
 
 dependencies:
     pre:
