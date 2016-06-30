@@ -1,25 +1,27 @@
 test:
     override:
-        - cd ../mbed-tls-sample && mbed compile -m K64F -t GCC_ARM -c -j0
+        #- cd ../mbed-tls-sample && mbed compile -m K64F -t GCC_ARM -c -j0
+        ls
 
 dependencies:
     pre:
         # Install mbed-cli
-        - cd ../ && ls
-        - cd ../ && git clone https://github.com/ARMmbed/mbed-cli.git
-        - cd ../mbed-cli && sudo -H pip install -e .
+        #- pwd
+        #- cd ../ && git clone https://github.com/ARMmbed/mbed-cli.git
+        #- cd ../mbed-cli && sudo -H pip install -e .
         # Install gcc-arm
-        - sudo add-apt-repository -y ppa:terry.guo/gcc-arm-embedded
-        - sudo apt-get -y update
-        - sudo apt-get -y install gcc-arm-none-eabi=4.9.3.2015q3-1precise1
+        - cd .. && wget "https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2"
+        - cd .. && tar -xvjf gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2
+        - cd .. && ls
         # Get the sample application
-        - cd ../ && git clone git@github.com:ARMmbed/mbed-tls-sample.git
+        #- cd ../ && git clone git@github.com:ARMmbed/mbed-tls-sample.git
         # Get mbed-os
-        - cd ../mbed-tls-sample/ && rm mbed-os.lib
-        - cd ../mbed-tls-sample/ && mbed add https://github.com/ARMmbed/mbed-os.git
+        #- cd ../mbed-tls-sample/ && rm mbed-os.lib
+        #- cd ../mbed-tls-sample/ && mbed add https://github.com/ARMmbed/mbed-os.git
         # Import mbedtls current revision
         - ln -s ../../../../../../mbedtls/ ../mbed-tls-sample/mbed-os/features/mbedtls/importer/TARGET_IGNORE/mbedtls
         - cd ../mbed-tls-sample/mbed-os/features/mbedtls/importer/ && make
     override:
         # Install the missing python packages
-        - cd ../mbed-tls-sample/mbed-os && sudo -H pip install -r requirements.txt
+        #- cd ../mbed-tls-sample/mbed-os && sudo -H pip install -r requirements.txt
+        - ls
