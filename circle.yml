@@ -19,6 +19,12 @@ dependencies:
         - cd ../mbed-tls-sample/ && rm mbed-os.lib
         - cd ../mbed-tls-sample/ && mbed add https://github.com/ARMmbed/mbed-os.git
         # Import mbedtls current revision
+        - ls ../mbed-tls-sample/
+        - ls ../mbed-tls-sample/mbed-os/
+        - ls ../mbed-tls-sample/mbed-os/features/
+        - ls ../mbed-tls-sample/mbed-os/features/mbedtls/
+        - ls ../mbed-tls-sample/mbed-os/features/mbedtls/importer/
+        - ls ../mbed-tls-sample/mbed-os/features/mbedtls/importer/TARGET_IGNORE/
         - ln -s ../../../../../../mbedtls/ ../mbed-tls-sample/mbed-os/features/mbedtls/importer/TARGET_IGNORE/mbedtls
         - cd ../mbed-tls-sample/mbed-os/features/mbedtls/importer/ && make
     override:
