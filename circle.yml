@@ -9,7 +9,8 @@ dependencies:
         - cd .. && wget "https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2"
         - cd .. && tar -xvjf gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2
         - cd .. && ls
-        - ln -s ../gcc-arm-none-eabi-4_9-2015q3-20150921-linux/bin/* ../bin/
+        - ln -s ../gcc-arm-none-eabi-4_9-2015q3/bin/* ../bin/
+        - ls ../bin/
         # Install mbed-cli
         - cd ../ && git clone https://github.com/ARMmbed/mbed-cli.git
         - cd ../mbed-cli && sudo -H pip install -e .
@@ -18,6 +19,7 @@ dependencies:
         # Get mbed-os
         - cd ../mbed-tls-sample/ && rm mbed-os.lib
         - cd ../mbed-tls-sample/ && mbed add https://github.com/ARMmbed/mbed-os.git
+        - cd ../mbed-tls-sample/ && mbed update
         # Import mbedtls current revision
         - ls ../mbed-tls-sample/
         - ls ../mbed-tls-sample/mbed-os/
