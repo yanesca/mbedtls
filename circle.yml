@@ -35,4 +35,4 @@ dependencies:
         - cd ../mbed-tls-sample/mbed-os/features/mbedtls/importer/ && make
     override:
         # Install the missing python packages
-        - cd ../mbed-tls-sample/mbed-os && sudo -H pip install -r requirements.txt
+        - cd ../mbed-tls-sample/mbed-os/core && sudo -H pip install -r requirements.txt
