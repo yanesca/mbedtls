@@ -1,6 +1,6 @@
 test:
     override:
-        - cd ../mbed-os-example-tls && mbed compile -m K64F -t GCC_ARM -c
+        - cd ../mbed-os-example-tls/tls-client/ && mbed compile -m K64F -t GCC_ARM -c
 
 dependencies:
     pre:
