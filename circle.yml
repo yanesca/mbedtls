@@ -36,4 +36,4 @@ dependencies:
         - cd ../mbed-os-example-tls/tls-client/mbed-os/features/mbedtls/importer/ && make
     override:
         # Install the missing python packages
-        - cd ../mbed-os-example-tls/tls-client/mbed-os/core && sudo -H pip install -r requirements.txt
+        - cd ../mbed-os-example-tls/tls-client/mbed-os/ && sudo -H pip install -r requirements.txt
