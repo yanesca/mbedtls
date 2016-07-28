@@ -23,7 +23,7 @@ dependencies:
         # Get mbed-os
         #- cd ../mbed-os-example-tls/tls-client && mbed deploy
         - cd ../mbed-os-example-tls/tls-client && cat mbed-os.lib
-        - cd ../mbed-os-example-tls/tls-client && mbed update
+        - cd ../mbed-os-example-tls/tls-client && mbed update master
         - cd ../mbed-os-example-tls/tls-client && cat mbed-os.lib
         # Import mbedtls current revision
         - ls ../mbed-os-example-tls/tls-client/
