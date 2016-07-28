@@ -21,9 +21,10 @@ dependencies:
         # Get the sample application
         - cd ../ && git clone git@github.com:ARMmbed/mbed-os-example-tls.git
         # Get mbed-os
-        - cd ../mbed-os-example-tls/tls-client && rm mbed-os.lib
-        - cd ../mbed-os-example-tls/tls-client && mbed add https://github.com/ARMmbed/mbed-os
-        - cd ../mbed-os-example-tls/tls-client && mbed deploy
+        #- cd ../mbed-os-example-tls/tls-client && mbed deploy
+        - cd ../mbed-os-example-tls/tls-client && cat mbed-os.lib
+        - cd ../mbed-os-example-tls/tls-client && mbed update
+        - cd ../mbed-os-example-tls/tls-client && cat mbed-os.lib
         # Import mbedtls current revision
         - ls ../mbed-os-example-tls/tls-client/
         - ls ../mbed-os-example-tls/tls-client/mbed-os/
