@@ -1,0 +1,10 @@
+# Purpose:
+# - To provide a simple placeholder test suite for Circle CI
+#
+# (Integration testing with mbed-os is not applicable for this branch)
+
+ test:
+     override:
+             - make
+             - make test
+
