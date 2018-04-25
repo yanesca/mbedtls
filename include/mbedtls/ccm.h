@@ -11,6 +11,9 @@
  * <li>Nonce - A unique value that is assigned to the payload and the
  * associated data.</li></ul>
  *
+ * CCM* is an extension of CCM and backwards compatible with it. The API in this
+ * file can be used to implement both CCM and CCM*.
+ *
  */
 /*
  *  Copyright (C) 2006-2018, Arm Limited (or its affiliates), All Rights Reserved
@@ -39,6 +42,8 @@
 #define MBEDTLS_ERR_CCM_BAD_INPUT       -0x000D /**< Bad input parameters to the function. */
 #define MBEDTLS_ERR_CCM_AUTH_FAILED     -0x000F /**< Authenticated decryption failed. */
 #define MBEDTLS_ERR_CCM_HW_ACCEL_FAILED -0x0011 /**< CCM hardware accelerator failed. */
+
+#define MBEDTLS_CCM_STAR_NOAUTH     0xAFAF  /**< Disable authentication in CCM* mode */
 
 #if !defined(MBEDTLS_CCM_ALT)
 // Regular implementation
@@ -105,7 +110,17 @@ void mbedtls_ccm_free( mbedtls_ccm_context *ctx );
  *                  Must be at least \p length Bytes wide.
  * \param tag       The buffer holding the tag.
  * \param tag_len   The length of the tag to generate in Bytes:
- *                  4, 6, 8, 10, 12, 14 or 16.
+ *                  4, 6, 8, 10, 12, 14, 16 or MBEDTLS_CCM_STAR_NOAUTH (tag
+ *                  length 0).
+ *
+ * \note            When implementing CCM* with variable tag length, the tag
+ *                  length must be encoded in the nonce (\p iv), before calling
+ *                  this function.
+ *
+ * \note            Passing MBEDTLS_CCM_STAR_NOAUTH results in a behaviour that
+ *                  is compliant with CCM* but not with CCM. Any other valid
+ *                  parametrisation results in behaviour compliant to both CCM
+ *                  and CCM*.
  *
  * \note            The tag is written to a separate buffer. To concatenate
  *                  the \p tag with the \p output, as done in <em>RFC-3610:
@@ -137,7 +152,17 @@ int mbedtls_ccm_encrypt_and_tag( mbedtls_ccm_context *ctx, size_t length,
  *                  Must be at least \p length Bytes wide.
  * \param tag       The buffer holding the tag.
  * \param tag_len   The length of the tag in Bytes.
- *                  4, 6, 8, 10, 12, 14 or 16.
+ *                  4, 6, 8, 10, 12, 14, 16 or MBEDTLS_CCM_STAR_NOAUTH (tag
+ *                  length 0).
+ *
+ * \note            When implementing CCM* with variable tag length, the tag
+ *                  length must be derived from the nonce (\p iv), before
+ *                  calling this function.
+ *
+ * \note            Passing MBEDTLS_CCM_STAR_NOAUTH results in a behaviour that
+ *                  is compliant with CCM* but not with CCM. Any other valid
+ *                  parametrisation results in behaviour compliant to both CCM
+ *                  and CCM*.
  *
  * \return          0 if successful and authenticated, or
  *                  #MBEDTLS_ERR_CCM_AUTH_FAILED if the tag does not match.
