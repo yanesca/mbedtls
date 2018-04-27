@@ -61,6 +61,42 @@ typedef struct {
 mbedtls_ccm_context;
 
 /**
+ * \brief    The CCM* callback for encrypting with variable tag length. The
+ *           function pointer is passed to the APIs called.
+ *
+ *           First parameter is a pointer to a context structure needed for
+ *           calculating the nonce. The second parameter is the tag length,
+ *           and the fourth is the buffer for the calculated nonce. The last
+ *           parameter is the length of the nonce in bytes. The function
+ *           calculates the nonce and returns it in the buffer.
+ */
+typedef void (*mbedtls_ccm_star_enc_callback)(void *, size_t, unsigned char *,
+                                                size_t);
+
+/**
+ * \brief    The CCM* callback for decrypting with variable tag length. The
+ *           function pointer is passed to the APIs called.
+ *
+ *           First parameter is a pointer to a context structure needed for
+ *           deriving the tag length. The second parameter is the nonce used
+ *           in the CCM* calculation, and the last parameter is the length
+ *           of the nonce in bytes. The function calculates and returns the
+ *           length of the tag.
+ */
+typedef size_t (*mbedtls_ccm_star_dec_callback)(void *, const unsigned char *,
+                                                size_t);
+
+/**
+ * Defines the CCM variant to be used.
+ */
+typedef enum
+{
+    MBEDTLS_CCM_STRICT,         /**< The original, plain CCM. */
+    MBEDTLS_CCM_STAR_FIXED,     /**< CCM* with fixed tag length. */
+    MBEDTLS_CCM_STAR_VARIABLE,  /**< CCM* with variable tag length. */
+} mbedtls_ccm_variant;
+
+/**
  * \brief           This function initializes the specified CCM context,
  *                  to make references valid, and prepare the context
  *                  for mbedtls_ccm_setkey() or mbedtls_ccm_free().
@@ -128,6 +164,50 @@ int mbedtls_ccm_encrypt_and_tag( mbedtls_ccm_context *ctx, size_t length,
                          unsigned char *tag, size_t tag_len );
 
 /**
+ * \brief               This function encrypts a buffer using CCM or CCM*.
+ *
+ *
+ * \note                The tag is written to a separate buffer. To concatenate
+ *                      the \p tag with the \p output, as done in <em>RFC-3610:
+ *                      Counter with CBC-MAC (CCM)</em>, use
+ *                      \p tag = \p output + \p length, and make sure that the
+ *                      output buffer is at least \p length + \p tag_len wide.
+ *
+ * \param ctx           The CCM context to use for encryption.
+ * \param length        The length of the input data in Bytes.
+ * \param iv            Initialization vector (nonce). Must be NULL in
+ *                      MBEDTLS_CCM_STAR_VARIABLE mode.
+ * \param iv_len        The length of the IV in Bytes: 7, 8, 9, 10, 11, 12,
+ *                      or 13.
+ * \param add           The additional data field.
+ * \param add_len       The length of additional data in Bytes.
+ *                      Must be less than 2^16 - 2^8.
+ * \param input         The buffer holding the input data.
+ * \param output        The buffer holding the output data.
+ *                      Must be at least \p length Bytes wide.
+ * \param tag           The buffer holding the tag.
+ * \param tag_len       The length of the tag to generate in Bytes:
+ *                      0, 4, 6, 8, 10, 12, 14 or 16. The value 0 is not
+ *                      permitted in MBEDTLS_CCM_STRICT mode.
+ * \param get_iv        A callback function returning the IV (nonce). Only used
+ *                      in MBEDTLS_CCM_STAR_VARIABLE mode, must be NULL
+ *                      otherwise.
+ * \param get_iv_ctx    Context passed to the \p get_iv callback. Only used in
+ *                      MBEDTLS_CCM_STAR_VARIABLE mode, must be NULL otherwise.
+ * \param mode          The CCM variant to use.
+ *
+ * \return              \c 0 on success.
+ * \return              A CCM or cipher-specific error code on failure.
+ */
+int mbedtls_ccm_encrypt_and_tag_ext( mbedtls_ccm_context *ctx, size_t length,
+                         const unsigned char *iv, size_t iv_len,
+                         const unsigned char *add, size_t add_len,
+                         const unsigned char *input, unsigned char *output,
+                         unsigned char *tag, size_t tag_len,
+                         mbedtls_ccm_star_enc_callback get_nonce,
+                         void *get_tlen_ctx, mbedtls_ccm_variant mode );
+
+/**
  * \brief           This function performs a CCM authenticated decryption of a
  *                  buffer.
  *
@@ -154,6 +234,50 @@ int mbedtls_ccm_auth_decrypt( mbedtls_ccm_context *ctx, size_t length,
                       const unsigned char *add, size_t add_len,
                       const unsigned char *input, unsigned char *output,
                       const unsigned char *tag, size_t tag_len );
+
+/**
+ * \brief               This function performs a CCM or CCM* authenticated
+ *                      decryption of a buffer.
+ *
+ * \param ctx           The CCM context to use for decryption.
+ * \param length        The length of the input data in Bytes.
+ * \param iv            Initialization vector.
+ * \param iv_len        The length of the IV in Bytes: 7, 8, 9, 10, 11, 12,
+ *                      or 13.
+ * \param add           The additional data field.
+ * \param add_len       The length of additional data in Bytes.
+ *                      Must be less than 2^16 - 2^8.
+ * \param input         The buffer holding the input data.
+ * \param output        The buffer holding the output data.
+ *                      Must be at least \p length Bytes wide.
+ * \param tag           The buffer holding the tag. Must be NULL in
+ *                      MBEDTLS_CCM_STAR_VARIABLE mode.
+ * \param tag_len       The length of the tag in Bytes.
+ *                      0, 4, 6, 8, 10, 12, 14 or 16. The value 0 is not
+ *                      permitted in MBEDTLS_CCM_STRICT mode. Must be 0 in
+ *                      MBEDTLS_CCM_STAR_VARIABLE mode.
+ * \param get_tag_len   A callback function returning the tag length. Only used
+ *                      in MBEDTLS_CCM_STAR_VARIABLE mode, must be NULL
+ *                      otherwise.
+ * \param get_tlen_ctx  Context passed to the \p get_tag_len callback. Only used
+ *                      in MBEDTLS_CCM_STAR_VARIABLE mode, must be NULL
+ *                      otherwise.
+ * \param mode          The CCM variant to use.
+ *
+ *
+ * \return              \c 0 on success. This indicates that the message is
+ *                      authentic.
+ * \return              #MBEDTLS_ERR_CCM_AUTH_FAILED if the tag does not match.
+ * \return              A cipher-specific error code on calculation failure.
+ */
+int mbedtls_ccm_auth_decrypt_ext( mbedtls_ccm_context *ctx, size_t length,
+                      const unsigned char *iv, size_t iv_len,
+                      const unsigned char *add, size_t add_len,
+                      const unsigned char *input, unsigned char *output,
+                      const unsigned char *tag, size_t tag_len,
+                      mbedtls_ccm_star_dec_callback get_tag_len,
+                      void *get_tlen_ctx, mbedtls_ccm_variant mode );
+
 
 #ifdef __cplusplus
 }
