@@ -84,6 +84,14 @@ typedef enum {
 } mbedtls_pk_type_t;
 
 /**
+ * \brief          Alternative implementation types
+ */
+typedef enum {
+    MBEDTLS_PK_ALT_NONE=0,
+    MBEDTLS_PK_ALT_DEFAULT,
+} mbedtls_pk_alt_type_t;
+
+/**
  * \brief           Options for RSASSA-PSS signature verification.
  *                  See \c mbedtls_rsa_rsassa_pss_verify_ext()
  */
