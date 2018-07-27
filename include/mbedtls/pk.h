@@ -81,6 +81,7 @@ typedef enum {
     MBEDTLS_PK_ECDSA,
     MBEDTLS_PK_RSA_ALT,
     MBEDTLS_PK_RSASSA_PSS,
+    MBEDTLS_PK_ECDH,
 } mbedtls_pk_type_t;
 
 /**

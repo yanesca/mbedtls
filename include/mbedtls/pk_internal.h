@@ -83,6 +83,8 @@ struct mbedtls_pk_info_t
     /** Interface with the debug module */
     void (*debug_func)( const void *ctx, mbedtls_pk_debug_item *items );
 
+    /** Additional type information */
+    const void * extra_info;
 };
 #if defined(MBEDTLS_PK_RSA_ALT_SUPPORT)
 /* Container for RSA-alt */
@@ -93,6 +95,14 @@ typedef struct
     mbedtls_pk_rsa_alt_sign_func sign_func;
     mbedtls_pk_rsa_alt_key_len_func key_len_func;
 } mbedtls_rsa_alt_context;
+#endif
+
+#if defined(MBEDTLS_ECDH_C)
+/* Container for ECDH information and operations */
+typedef struct mbedtls_pk_ecdh_info_t
+{
+    mbedtls_pk_alt_type_t type;
+} mbedtls_pk_ecdh_info_t;
 #endif
 
 #if defined(MBEDTLS_RSA_C)
