@@ -89,6 +89,10 @@ const mbedtls_pk_info_t * mbedtls_pk_info_from_type( mbedtls_pk_type_t pk_type )
         case MBEDTLS_PK_ECDSA:
             return( &mbedtls_ecdsa_info );
 #endif
+#if defined(MBEDTLS_ECDH_C)
+        case MBEDTLS_PK_ECDH:
+            //return( &mbedtls_ecdh_info );
+#endif
         /* MBEDTLS_PK_RSA_ALT omitted on purpose */
         default:
             return( NULL );
@@ -375,5 +379,138 @@ mbedtls_pk_type_t mbedtls_pk_get_type( const mbedtls_pk_context *ctx )
 
     return( ctx->pk_info->type );
 }
+
+
+/*
+ * Make Diffie-Hellman parameters
+ */
+int mbedtls_pk_make_params( mbedtls_pk_context *ctx, size_t *olen,
+                      unsigned char *buf, size_t blen,
+                      int (*f_rng)(void *, unsigned char *, size_t),
+                      void *p_rng )
+{
+    const mbedtls_pk_ecdh_info_t *info = NULL;
+
+    if( ctx == NULL || ctx->pk_info == NULL || ctx->pk_info->extra_info == NULL)
+        return( MBEDTLS_ERR_PK_BAD_INPUT_DATA );
+
+    info = ctx->pk_info->extra_info;
+
+    if( ctx->pk_info->type != MBEDTLS_PK_ECDH ||
+            info->make_params_func == NULL )
+        return( MBEDTLS_ERR_PK_TYPE_MISMATCH );
+
+    return( info->make_params_func( ctx->pk_ctx, olen, buf, blen, f_rng,
+                p_rng ) );
+}
+
+/*
+ * Read Diffie-Hellman parameters
+ */
+int mbedtls_pk_read_params( mbedtls_pk_context *ctx,
+                            const unsigned char **buf,
+                            const unsigned char *end )
+{
+    const mbedtls_pk_ecdh_info_t *info = NULL;
+
+    if( ctx == NULL || ctx->pk_info == NULL || ctx->pk_info->extra_info == NULL)
+        return( MBEDTLS_ERR_PK_BAD_INPUT_DATA );
+
+    info = ctx->pk_info->extra_info;
+
+    if( ctx->pk_info->type != MBEDTLS_PK_ECDH ||
+            info->make_params_func == NULL )
+        return( MBEDTLS_ERR_PK_TYPE_MISMATCH );
+
+    return( info->read_params_func( ctx->pk_ctx, buf, end ) );
+}
+
+/*
+ * Get Diffie-Hellman parameters
+ */
+int mbedtls_pk_get_params( mbedtls_pk_context *ctx,
+                           const mbedtls_pk_context *key,
+                           int side )
+{
+    const mbedtls_pk_ecdh_info_t *info = NULL;
+
+    if( ctx == NULL || ctx->pk_info == NULL || ctx->pk_info->extra_info == NULL)
+        return( MBEDTLS_ERR_PK_BAD_INPUT_DATA );
+
+    info = ctx->pk_info->extra_info;
+
+    if( ctx->pk_info->type != MBEDTLS_PK_ECDH ||
+            info->make_params_func == NULL )
+        return( MBEDTLS_ERR_PK_TYPE_MISMATCH );
+
+    return( info->get_params_func( ctx->pk_ctx, key, side ) );
+}
+
+/*
+ * Make the public Diffie-Hellman parameter
+ */
+int mbedtls_pk_make_public( mbedtls_pk_context *ctx, size_t *olen,
+                      unsigned char *buf, size_t blen,
+                      int (*f_rng)(void *, unsigned char *, size_t),
+                      void *p_rng )
+{
+    const mbedtls_pk_ecdh_info_t *info = NULL;
+
+    if( ctx == NULL || ctx->pk_info == NULL || ctx->pk_info->extra_info == NULL)
+        return( MBEDTLS_ERR_PK_BAD_INPUT_DATA );
+
+    info = ctx->pk_info->extra_info;
+
+    if( ctx->pk_info->type != MBEDTLS_PK_ECDH ||
+            info->make_params_func == NULL )
+        return( MBEDTLS_ERR_PK_TYPE_MISMATCH );
+
+    return( info->make_public_func( ctx->pk_ctx, olen, buf, blen, f_rng,
+                p_rng ) );
+}
+
+/*
+ * Read the public Diffie-Hellman parameter
+ */
+int mbedtls_pk_read_public( mbedtls_pk_context *ctx,
+                            const unsigned char *buf, size_t blen )
+{
+    const mbedtls_pk_ecdh_info_t *info = NULL;
+
+    if( ctx == NULL || ctx->pk_info == NULL || ctx->pk_info->extra_info == NULL)
+        return( MBEDTLS_ERR_PK_BAD_INPUT_DATA );
+
+    info = ctx->pk_info->extra_info;
+
+    if( ctx->pk_info->type != MBEDTLS_PK_ECDH ||
+            info->make_params_func == NULL )
+        return( MBEDTLS_ERR_PK_TYPE_MISMATCH );
+
+    return( info->read_public_func( ctx->pk_ctx, buf, blen ) );
+}
+
+/*
+ * Calculate the Diffie-Hellman shared secret
+ */
+int mbedtls_pk_calc_secret( mbedtls_pk_context *ctx, size_t *olen,
+                      unsigned char *buf, size_t blen,
+                      int (*f_rng)(void *, unsigned char *, size_t),
+                      void *p_rng )
+{
+    const mbedtls_pk_ecdh_info_t *info = NULL;
+
+    if( ctx == NULL || ctx->pk_info == NULL || ctx->pk_info->extra_info == NULL)
+        return( MBEDTLS_ERR_PK_BAD_INPUT_DATA );
+
+    info = ctx->pk_info->extra_info;
+
+    if( ctx->pk_info->type != MBEDTLS_PK_ECDH ||
+            info->make_params_func == NULL )
+        return( MBEDTLS_ERR_PK_TYPE_MISMATCH );
+
+    return( info->calc_secret_func( ctx->pk_ctx, olen, buf, blen, f_rng,
+                p_rng ) );
+}
+
 
 #endif /* MBEDTLS_PK_C */
