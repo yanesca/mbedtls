@@ -102,6 +102,39 @@ typedef struct
 typedef struct mbedtls_pk_ecdh_info_t
 {
     mbedtls_pk_alt_type_t type;
+
+    /* Make parameters */
+    int (*make_params_func)( void *ctx, size_t *olen,
+                             unsigned char *buf, size_t blen,
+                             int (*f_rng)(void *, unsigned char *, size_t),
+                             void *p_rng );
+
+    /* Read parameters */
+    int (*read_params_func)( void *ctx,
+                             const unsigned char **buf,
+                             const unsigned char *end );
+
+    /* Get parameters */
+    int (*get_params_func)( void *ctx,
+                            const mbedtls_pk_context *key,
+                            int side );
+
+    /* Make public key */
+    int (*make_public_func)( void *ctx, size_t *olen,
+                             unsigned char *buf, size_t blen,
+                             int (*f_rng)(void *, unsigned char *, size_t),
+                             void *p_rng );
+
+    /* Read public key */
+    int (*read_public_func)( void *ctx,
+                             const unsigned char *buf, size_t blen );
+
+    /* Calculate shared secret */
+    int (*calc_secret_func)( void *ctx, size_t *olen,
+                             unsigned char *buf, size_t blen,
+                             int (*f_rng)(void *, unsigned char *, size_t),
+                             void *p_rng );
+
 } mbedtls_pk_ecdh_info_t;
 #endif
 
