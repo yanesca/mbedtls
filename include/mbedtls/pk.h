@@ -438,6 +438,130 @@ const char * mbedtls_pk_get_name( const mbedtls_pk_context *ctx );
  */
 mbedtls_pk_type_t mbedtls_pk_get_type( const mbedtls_pk_context *ctx );
 
+/**
+ * \brief           This function generates a public key and a TLS
+ *                  ServerKeyExchange payload.
+ *
+ *                  This is the first function used by a TLS server for ECDHE
+ *                  ciphersuites.
+ *
+ * \note            This function assumes that the group of the
+ *                  \p ctx context has already been properly set.
+ *
+ * \param ctx       Context to use
+ * \param olen      The number of characters written.
+ * \param buf       The destination buffer.
+ * \param blen      The length of the destination buffer.
+ * \param f_rng     The RNG function.
+ * \param p_rng     The RNG context.
+ *
+ * \return          0 on success, or a specific error code.
+ */
+int mbedtls_pk_make_params( mbedtls_pk_context *ctx, size_t *olen,
+                      unsigned char *buf, size_t blen,
+                      int (*f_rng)(void *, unsigned char *, size_t),
+                      void *p_rng );
+
+/**
+ * \brief           This function parses and processes a TLS ServerKeyExhange
+ *                  payload.
+ *
+ *                  This is the first function used by a TLS client for ECDHE
+ *                  ciphersuites.
+ *
+ * \param ctx       Context to use
+ * \param buf       The pointer to the start of the input buffer.
+ * \param end       The address for one Byte past the end of the buffer.
+ *
+ * \return          0 on success, or a specific error code.
+ *
+ */
+int mbedtls_pk_read_params( mbedtls_pk_context *ctx,
+                            const unsigned char **buf,
+                            const unsigned char *end );
+
+/**
+ * \brief           This function sets up an ECDH context from an EC key.
+ *
+ *                  It is used by clients and servers in place of the
+ *                  ServerKeyEchange for static ECDH, and imports ECDH
+ *                  parameters from the EC key information of a certificate.
+ *
+ * \param ctx       Context to useto set up.
+ * \param key       The EC key to use.
+ * \param side      Defines the source of the key: 1: Our key, or
+ *                  0: The key of the peer.
+ *
+ * \return          0 on success, or a specific error code.
+ *
+ */
+int mbedtls_pk_get_params( mbedtls_pk_context *ctx,
+                           const mbedtls_pk_context *key,
+                           int side );
+
+/**
+ * \brief           This function generates a public key and a TLS
+ *                  ClientKeyExchange payload.
+ *
+ *                  This is the second function used by a TLS client for ECDH(E)
+ *                  ciphersuites.
+ *
+ * \param ctx       Context to use
+ * \param olen      The number of Bytes written.
+ * \param buf       The destination buffer.
+ * \param blen      The size of the destination buffer.
+ * \param f_rng     The RNG function.
+ * \param p_rng     The RNG context.
+ *
+ * \return          0 on success, or a specific error code.
+ */
+int mbedtls_pk_make_public( mbedtls_pk_context *ctx, size_t *olen,
+                      unsigned char *buf, size_t blen,
+                      int (*f_rng)(void *, unsigned char *, size_t),
+                      void *p_rng );
+
+/**
+ * \brief       This function parses and processes a TLS ClientKeyExchange
+ *              payload.
+ *
+ *              This is the second function used by a TLS server for ECDH(E)
+ *              ciphersuites.
+ *
+ * \param ctx   Context to use
+ * \param buf   The start of the input buffer.
+ * \param blen  The length of the input buffer.
+ *
+ * \return      0 on success, or a specific error code.
+ */
+int mbedtls_pk_read_public( mbedtls_pk_context *ctx,
+                            const unsigned char *buf, size_t blen );
+
+/**
+ * \brief           This function derives and exports the shared secret.
+ *
+ *                  This is the last function used by both TLS client
+ *                  and servers.
+ *
+ * \note            If \p f_rng is not NULL, it is used to implement
+ *                  countermeasures against side-channel attacks.
+ *                  For more information, see mbedtls_ecp_mul().
+ *
+ * \see             ecp.h
+ *
+ * \param ctx       Context to use
+ * \param olen      The number of Bytes written.
+ * \param buf       The destination buffer.
+ * \param blen      The length of the destination buffer.
+ * \param f_rng     The RNG function.
+ * \param p_rng     The RNG context.
+ *
+ * \return          0 on success, or a specific error code.
+ */
+int mbedtls_pk_calc_secret( mbedtls_pk_context *ctx, size_t *olen,
+                      unsigned char *buf, size_t blen,
+                      int (*f_rng)(void *, unsigned char *, size_t),
+                      void *p_rng );
+
 #if defined(MBEDTLS_PK_PARSE_C)
 /** \ingroup pk_module */
 /**
