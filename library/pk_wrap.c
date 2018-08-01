@@ -41,6 +41,10 @@
 #include "mbedtls/ecdsa.h"
 #endif
 
+#if defined(MBEDTLS_ECDH_C)
+#include "mbedtls/ecdh.h"
+#endif
+
 #if defined(MBEDTLS_PK_RSA_ALT_SUPPORT)
 #include "mbedtls/platform_util.h"
 #endif
@@ -524,5 +528,123 @@ const mbedtls_pk_info_t mbedtls_rsa_alt_info = {
 };
 
 #endif /* MBEDTLS_PK_RSA_ALT_SUPPORT */
+
+#if defined(MBEDTLS_ECDH_C)
+
+static int ecdh_make_params( void *ctx, size_t *olen,
+                             unsigned char *buf, size_t blen,
+                             int (*f_rng)(void *, unsigned char *, size_t),
+                             void *p_rng )
+{
+    mbedtls_ecdh_context *ecdh = (mbedtls_ecdh_context *) ctx;
+
+    return( mbedtls_ecdh_make_params( ecdh, olen, buf, blen, f_rng, p_rng ) );
+}
+
+static int ecdh_read_params( void *ctx,
+                             const unsigned char **buf,
+                             const unsigned char *end )
+{
+    mbedtls_ecdh_context *ecdh = (mbedtls_ecdh_context *) ctx;
+
+    return( mbedtls_ecdh_read_params( ecdh, buf, end ) );
+}
+
+static int ecdh_get_params( void *ctx,
+                            const mbedtls_pk_context *key,
+                            int side )
+{
+    mbedtls_ecdh_context *ecdh = (mbedtls_ecdh_context *) ctx;
+
+    if( !mbedtls_pk_can_do( ctx, MBEDTLS_PK_ECKEY_DH ) )
+        return MBEDTLS_ERR_PK_TYPE_MISMATCH;
+
+    return( mbedtls_ecdh_get_params( ecdh, (mbedtls_ecp_keypair *) key->pk_ctx,
+                side ) );
+}
+
+static int ecdh_make_public( void *ctx, size_t *olen,
+                             unsigned char *buf, size_t blen,
+                             int (*f_rng)(void *, unsigned char *, size_t),
+                             void *p_rng )
+{
+    mbedtls_ecdh_context *ecdh = (mbedtls_ecdh_context *) ctx;
+
+    return( mbedtls_ecdh_make_public( ecdh, olen, buf, blen, f_rng, p_rng ) );
+}
+
+static int ecdh_read_public( void *ctx,
+                             const unsigned char *buf, size_t blen )
+{
+    mbedtls_ecdh_context *ecdh = (mbedtls_ecdh_context *) ctx;
+
+    return( mbedtls_ecdh_read_public( ecdh, buf, blen ) );
+}
+
+static int ecdh_calc_secret( void *ctx, size_t *olen,
+                             unsigned char *buf, size_t blen,
+                             int (*f_rng)(void *, unsigned char *, size_t),
+                             void *p_rng )
+{
+    mbedtls_ecdh_context *ecdh = (mbedtls_ecdh_context *) ctx;
+
+    return( mbedtls_ecdh_calc_secret( ecdh, olen, buf, blen, f_rng, p_rng ) );
+}
+
+
+const mbedtls_pk_ecdh_info_t mbedtls_ecdh_default_extra_info = {
+    MBEDTLS_PK_ALT_DEFAULT,
+    ecdh_make_params,
+    ecdh_read_params,
+    ecdh_get_params,
+    ecdh_make_public,
+    ecdh_read_public,
+    ecdh_calc_secret,
+};
+
+static int ecdh_can_do( mbedtls_pk_type_t type )
+{
+    return( type == MBEDTLS_PK_ECDH );
+}
+
+static size_t ecdh_get_bitlen( const void *ctx )
+{
+    const mbedtls_ecdh_context *ecdh = (const mbedtls_ecdh_context *) ctx;
+
+    return( ecdh->grp.pbits );
+}
+
+static void *ecdh_alloc_wrap( void )
+{
+    void *ctx = mbedtls_calloc( 1, sizeof( mbedtls_ecdh_context ) );
+
+    if( ctx != NULL )
+        memset( ctx, 0, sizeof( mbedtls_ecdh_context ) );
+
+    return( ctx );
+}
+
+static void ecdh_free_wrap( void *ctx )
+{
+    mbedtls_platform_zeroize( ctx, sizeof( mbedtls_ecdh_context ) );
+    mbedtls_free( ctx );
+}
+
+const mbedtls_pk_info_t mbedtls_ecdh_default_info = {
+    MBEDTLS_PK_ECDH,
+    "ECDH",
+    ecdh_get_bitlen,
+    ecdh_can_do,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    ecdh_alloc_wrap,
+    ecdh_free_wrap,
+    NULL,
+    &mbedtls_ecdh_default_extra_info,
+};
+#endif /* MBEDTLS_ECDH_C */
 
 #endif /* MBEDTLS_PK_C */
