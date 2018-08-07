@@ -7,7 +7,6 @@ Bugfix
      MBEDTLS_ARC4_C and MBEDTLS_CIPHER_NULL_CIPHER weren't also defined. #1890
 
 Changes
-
    * Add warnings to the documentation of the HKDF module to reduce the risk
      of misusing the mbedtls_hkdf_extract() and mbedtls_hkdf_expand()
      functions. Fixes #1775. Reported by Brian J. Murray.
