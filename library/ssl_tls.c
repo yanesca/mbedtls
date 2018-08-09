@@ -8611,4 +8611,111 @@ exit:
 #endif /* MBEDTLS_SSL_PROTO_TLS1 || MBEDTLS_SSL_PROTO_TLS1_1 || \
           MBEDTLS_SSL_PROTO_TLS1_2 */
 
+#if defined(MBEDTLS_ECDH_C)
+int mbedtls_ssl_ecdh_set_curve( mbedtls_ssl_ecdh_context *ctx,
+                                mbedtls_ecp_group_id curve )
+{
+    ctx->curve = curve;
+    ctx->variant = MBEDTLS_SSL_ECDH_VARIANT_MBED;
+
+    return( 0 );
+}
+
+int mbedtls_ssl_ecdh_make_params( mbedtls_ssl_ecdh_context *ctx, size_t *olen,
+                                  unsigned char *buf, size_t blen,
+                                  int (*f_rng)(void *, unsigned char *, size_t),
+                                  void *p_rng )
+{
+    int ret = MBEDTLS_ERR_SSL_INTERNAL_ERROR;
+
+    if( ctx == NULL )
+        return( ret );
+
+    if( MBEDTLS_SSL_ECDH_VARIANT_MBED == ctx->variant )
+        return( mbedtls_ecdh_make_params( &ctx->ctx.mbed_ecdh, olen, buf,
+                                              blen, f_rng, p_rng ) );
+
+    return( ret );
+}
+
+int mbedtls_ssl_ecdh_read_params( mbedtls_ssl_ecdh_context *ctx,
+                                  const unsigned char **buf,
+                                  const unsigned char *end )
+{
+    int ret = MBEDTLS_ERR_SSL_INTERNAL_ERROR;
+
+    if( ctx == NULL )
+        return( ret );
+
+    if( MBEDTLS_SSL_ECDH_VARIANT_MBED == ctx->variant )
+        return( mbedtls_ecdh_read_params( &ctx->ctx.mbed_ecdh, buf, end ) );
+
+    return( ret );
+}
+
+int mbedtls_ssl_ecdh_get_params( mbedtls_ssl_ecdh_context *ctx,
+                                 const mbedtls_ecp_keypair *key,
+                                 mbedtls_ssl_ecdh_side side )
+{
+    int ret = MBEDTLS_ERR_SSL_INTERNAL_ERROR;
+
+    if( ctx == NULL )
+        return( ret );
+
+    if( MBEDTLS_SSL_ECDH_VARIANT_MBED == ctx->variant )
+        return( mbedtls_ecdh_get_params( &ctx->ctx.mbed_ecdh, key, side ) );
+
+    return( ret );
+}
+
+int mbedtls_ssl_ecdh_make_public( mbedtls_ssl_ecdh_context *ctx, size_t *olen,
+                                  unsigned char *buf, size_t blen,
+                                  int (*f_rng)(void *, unsigned char *, size_t),
+                                  void *p_rng )
+{
+    int ret = MBEDTLS_ERR_SSL_INTERNAL_ERROR;
+
+    if( ctx == NULL )
+        return( ret );
+
+    if( MBEDTLS_SSL_ECDH_VARIANT_MBED == ctx->variant )
+        return( mbedtls_ecdh_make_public( &ctx->ctx.mbed_ecdh, olen, buf, blen,
+                                          f_rng, p_rng ) );
+
+    return( ret );
+}
+
+int mbedtls_ssl_ecdh_read_public( mbedtls_ssl_ecdh_context *ctx,
+                                  const unsigned char *buf, size_t blen )
+{
+    int ret = MBEDTLS_ERR_SSL_INTERNAL_ERROR;
+
+    if( ctx == NULL )
+        return( ret );
+
+    if( MBEDTLS_SSL_ECDH_VARIANT_MBED == ctx->variant )
+        return( mbedtls_ecdh_read_public( &ctx->ctx.mbed_ecdh, buf, blen ) );
+
+    return( ret );
+}
+
+int mbedtls_ssl_ecdh_calc_secret( mbedtls_ssl_ecdh_context *ctx, size_t *olen,
+                                  unsigned char *buf, size_t blen,
+                                  int (*f_rng)(void *, unsigned char *, size_t),
+                                  void *p_rng )
+{
+    int ret = MBEDTLS_ERR_SSL_INTERNAL_ERROR;
+
+    if( ctx == NULL )
+        return( ret );
+
+    if( MBEDTLS_SSL_ECDH_VARIANT_MBED == ctx->variant )
+        return( mbedtls_ecdh_calc_secret( &ctx->ctx.mbed_ecdh, olen, buf, blen,
+                                          f_rng, p_rng ) );
+
+    return( ret );
+}
+
+#endif /* MBEDTLS_ECDH_C */
+
 #endif /* MBEDTLS_SSL_TLS_C */
