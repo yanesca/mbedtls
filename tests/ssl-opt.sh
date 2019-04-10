@@ -4244,6 +4244,15 @@ run_test    "PSK callback: wrong key" \
             -S "SSL - Unknown identity received" \
             -s "SSL - Verification of the message MAC failed"
 
+run_test    "PSK callback: empty identity" \
+            "$P_SRV debug_level=3 psk_list=,dead" \
+            "$P_CLI debug_level=3 force_ciphersuite=TLS-PSK-WITH-AES-128-CBC-SHA \
+            psk_identity= psk=dead" \
+            0 \
+            -S "SSL - None of the common ciphersuites is usable" \
+            -S "SSL - Unknown identity received" \
+            -S "SSL - Verification of the message MAC failed"
+
 # Tests for EC J-PAKE
 
 requires_config_enabled MBEDTLS_KEY_EXCHANGE_ECJPAKE
