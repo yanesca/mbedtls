@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="301px" preserveAspectRatio="none" style="width:631px;height:301px;" version="1.1" viewBox="0 0 631 301" width="631px" zoomAndPan="magnify"><defs><filter height="300%" id="fj4by6axh4dy0" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[cbc0be2e139dd15b0007deace4fc5f27]
+cluster  --><rect fill="#FFFFFF" filter="url(#fj4by6axh4dy0)" height="216" style="stroke: #DC143C; stroke-width: 1.5;" width="352" x="134.5" y="68"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="0" x="313" y="83.5352"/><!--MD5=[cdb8f274676d302e15f2718dcbeb2456]
+cluster   --><rect fill="#FFFFFF" filter="url(#fj4by6axh4dy0)" height="87" style="stroke: #DC143C; stroke-width: 1.5;" width="168" x="158.5" y="168.5"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="0" x="247.5" y="184.0352"/><!--MD5=[6c374fa67b727986d454a28e366da937]
+cluster    --><rect fill="#FFFFFF" filter="url(#fj4by6axh4dy0)" height="96" style="stroke: #DC143C; stroke-width: 1.5;" width="112" x="350.5" y="164"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="0" x="414" y="179.5352"/><!--MD5=[ea9461ce6f2db1a7316beda884e4a518]
+entity mc--><rect fill="#FEFECE" filter="url(#fj4by6axh4dy0)" height="36.4883" rx="10" ry="10" style="stroke: #000000; stroke-width: 1.5;" width="108" x="270.5" y="103"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="88" x="280.5" y="126.5352">Mbed Crypto</text><!--MD5=[6377be883f12643b62e189b60fe92e84]
+entity ch--><rect fill="#FEFECE" filter="url(#fj4by6axh4dy0)" height="36.4883" style="stroke: #000000; stroke-width: 1.5;" width="136" x="174.5" y="203.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="116" x="184.5" y="227.0352">Crypto Hardware</text><!--MD5=[235b211f8d3870fce1c3db18ce3ccfaa]
+entity ks--><path d="M367,209 C367,199 406.5,199 406.5,199 C406.5,199 446,199 446,209 L446,234.4883 C446,244.4883 406.5,244.4883 406.5,244.4883 C406.5,244.4883 367,244.4883 367,234.4883 L367,209 " fill="#FEFECE" filter="url(#fj4by6axh4dy0)" style="stroke: #000000; stroke-width: 1.5;"/><path d="M367,209 C367,219 406.5,219 406.5,219 C406.5,219 446,219 446,209 " fill="none" style="stroke: #000000; stroke-width: 1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="59" x="377" y="236.5352">Keystore</text><!--MD5=[019f6774f902f72c488c9dcee70d4d6c]
+entity app1--><rect fill="#FEFECE" filter="url(#fj4by6axh4dy0)" height="36.4883" style="stroke: #000000; stroke-width: 1.5;" width="111" x="269" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="91" x="279" y="30.5352">Application 1</text><!--MD5=[81be28259591a23f63462d93727ccfe3]
+entity app2--><rect fill="#FEFECE" filter="url(#fj4by6axh4dy0)" height="36.4883" style="stroke: #000000; stroke-width: 1.5;" width="111" x="7" y="203.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="91" x="17" y="227.0352">Application 2</text><!--MD5=[640bfebe45159a20e5557f42971d9afe]
+entity app3--><rect fill="#FEFECE" filter="url(#fj4by6axh4dy0)" height="36.4883" style="stroke: #000000; stroke-width: 1.5;" width="111" x="503" y="203.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="91" x="513" y="227.0352">Application 3</text><!--MD5=[154be24feca988c6057dd50b46fb1e7d]
+link app1 to mc--><path d="M324.5,48.66 C324.5,63.52 324.5,82.85 324.5,97.64 " fill="none" id="app1-mc" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="324.5,102.87,328.5,93.87,324.5,97.87,320.5,93.87,324.5,102.87" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="324.5,43.24,320.5,52.24,324.5,48.24,328.5,52.24,324.5,43.24" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[85edd8d9901c9b6823f6f1ace8cf5d15]
+link app2 to ch--><path d="M123.33,221.5 C138.64,221.5 153.94,221.5 169.25,221.5 " fill="none" id="app2-ch" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="174.44,221.5,165.44,217.5,169.44,221.5,165.44,225.5,174.44,221.5" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="118.05,221.5,127.05,225.5,123.05,221.5,127.05,217.5,118.05,221.5" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[41c035d336f87c9bea8931a3c966396d]
+link app3 to ks--><path d="M497.62,221.5 C482.28,221.5 466.93,221.5 451.58,221.5 " fill="none" id="app3-ks" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="446.28,221.5,455.28,225.5,451.28,221.5,455.28,217.5,446.28,221.5" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="502.83,221.5,493.83,217.5,497.83,221.5,493.83,225.5,502.83,221.5" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[3be803e398ef509201b3165df95ca04a]
+link mc to ch--><path d="M306.94,143.09 C293.18,159.62 274.11,182.53 260.29,199.13 " fill="none" id="mc-ch" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="256.89,203.21,265.723,198.8535,260.0895,199.3677,259.5753,193.7343,256.89,203.21" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="310.22,139.16,301.387,143.5165,307.0205,143.0023,307.5347,148.6357,310.22,139.16" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[c89c63ae128d2a9e2d5713176ecd9064]
+link mc to ks--><path d="M342.13,143.18 C354.71,158.29 371.69,178.68 385.05,194.73 " fill="none" id="mc-ks" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="388.37,198.72,385.6847,189.2443,385.1705,194.8777,379.537,194.3635,388.37,198.72" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="338.78,139.16,341.4653,148.6357,341.9795,143.0023,347.613,143.5165,338.78,139.16" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[b049e251e3663481ce325067303a2167]
+@startuml mbed_crypto_high_level
+skinparam rectangle {
+    roundcorner<<Process>> 20
+    BorderColor<<TrustBoundary>> Crimson
+}
+skinparam arrowColor Black
+hide stereotype
+
+
+rectangle "Application 1" as app1 <<External Entity>>
+rectangle "Application 2" as app2 <<External Entity>>
+rectangle "Application 3" as app3 <<External Entity>>
+rectangle " " <<TrustBoundary>> {
+rectangle "Mbed Crypto" as mc <<Process>>
+rectangle "  " <<TrustBoundary>> {
+rectangle "Crypto Hardware" as ch <<External Entity>>
+}
+rectangle "   " <<TrustBoundary>> {
+database "Keystore" as ks
+}
+}
+
+
+app1 <-down-> mc
+app2 <-> ch
+app3 <-> ks
+mc <-down-> ch
+mc <-down-> ks
+@enduml
+
+PlantUML version 1.2020.15(Sun Jun 28 12:39:45 BST 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

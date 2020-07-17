@@ -1,0 +1,31 @@
+' Don't forget to re-generate the diagrams after editing this!
+
+@startuml mbed_crypto_high_level
+skinparam rectangle {
+    roundcorner<<Process>> 20
+    BorderColor<<TrustBoundary>> Crimson
+}
+skinparam arrowColor Black
+hide stereotype
+
+
+rectangle "Application 1" as app1 <<External Entity>>
+rectangle "Application 2" as app2 <<External Entity>>
+rectangle "Application 3" as app3 <<External Entity>>
+rectangle " " <<TrustBoundary>> {
+rectangle "Mbed Crypto" as mc <<Process>>
+rectangle "  " <<TrustBoundary>> {
+rectangle "Crypto Hardware" as ch <<External Entity>>
+}
+rectangle "   " <<TrustBoundary>> {
+database "Keystore" as ks
+}
+}
+
+
+app1 <-down-> mc
+app2 <-> ch
+app3 <-> ks
+mc <-down-> ch
+mc <-down-> ks
+@enduml
