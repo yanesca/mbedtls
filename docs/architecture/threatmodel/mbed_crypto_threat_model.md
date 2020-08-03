@@ -7,8 +7,8 @@ reference implementation the PSA Crypto API.
 
 Cryptography traditionally takes an attacker centric view of threat modeling.
 This seems to be the most natural approach for Mbed Crypto too. However, we
-are going to provide software and asset centric models as well. This will
-provide more complete view for threat modeling.
+are going to provide software and asset centric models as well
+[[1]](#references). This will provide more complete view for threat modeling.
 
 ## Data Flow Diagram
 
@@ -125,3 +125,7 @@ wildcards. For example:
 | AS-PT-AES-\*    | Plaintext involved in any AES based algorithm |
 | AS-PK-\*        | Public key in any algorithm |
 | ...    | |
+
+## References
+
+Adam Shostack, "Threat Modelling: Designing for Security", Wiley (2014)
