@@ -27,8 +27,13 @@ instance simultaneously.
 
 Either way, the library potentially serves several applications and as a
 cryptography library it lies at the heart of the wider system's security.
-Therefore we will treat the calling application as less trusted. (Knowing that
-in case they share a process, there is very little that can be done about it.)
+Therefore we will treat the calling application as less trusted.
+
+In the case where the library and the application is in the same process, it is
+acknowledged the library is more vulnerable. For example on many platforms, the
+application can call any part of the library and the attack surface is not
+constrained to the public APIs. Also, the application can directly access the
+memory used by the library and read secrets out.
 
 Mbed Crypto allows for use of hardware accelerators and secure elements (Crypto
 Hardware) both by the legacy replacement API and the PSA Crypto Driver
