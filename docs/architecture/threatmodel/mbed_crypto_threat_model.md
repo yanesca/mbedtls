@@ -1,8 +1,9 @@
 # Mbed Crypto Threat Model
 
-The goal of this document is to facilitate discussions within the developer
-community about security requirements against Mbed Crypto and to enable
-communicating the provided security guarantees towards users of the library.
+This document describes the security guarantees of the Mbed Crypto library,
+enabling developers to understand the security threats the library expects to
+mitigate. The document considers both the legacy Mbed TLS Crypto API and the
+reference implementation the PSA Crypto API.
 
 Cryptography traditionally takes an attacker centric view of threat modeling.
 This seems to be the most natural approach for Mbed Crypto too. However, we
