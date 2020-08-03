@@ -111,6 +111,7 @@ class FileIssueTracker:
 
 BINARY_FILE_PATH_RE_LIST = [
     r'docs/.*\.pdf\Z',
+    r'docs/.*\.svg\Z',
     r'programs/fuzz/corpuses/[^.]+\Z',
     r'tests/data_files/[^.]+\Z',
     r'tests/data_files/.*\.(crt|csr|db|der|key|pubkey)\Z',
