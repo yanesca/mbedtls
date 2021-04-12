@@ -197,6 +197,7 @@ static int psa_snprint_algorithm(char *buffer, size_t buffer_size,
     case PSA_ALG_CATEGORY_KEY_AGREEMENT: append(&buffer, buffer_size, &required_size, "PSA_ALG_CATEGORY_KEY_AGREEMENT", 30); break;
     case PSA_ALG_CATEGORY_KEY_DERIVATION: append(&buffer, buffer_size, &required_size, "PSA_ALG_CATEGORY_KEY_DERIVATION", 31); break;
     case PSA_ALG_CATEGORY_MAC: append(&buffer, buffer_size, &required_size, "PSA_ALG_CATEGORY_MAC", 20); break;
+    case PSA_ALG_CATEGORY_PAKE: append(&buffer, buffer_size, &required_size, "PSA_ALG_CATEGORY_PAKE", 21); break;
     case PSA_ALG_CATEGORY_SIGN: append(&buffer, buffer_size, &required_size, "PSA_ALG_CATEGORY_SIGN", 21); break;
     case PSA_ALG_CBC_MAC: append(&buffer, buffer_size, &required_size, "PSA_ALG_CBC_MAC", 15); break;
     case PSA_ALG_CBC_NO_PADDING: append(&buffer, buffer_size, &required_size, "PSA_ALG_CBC_NO_PADDING", 22); break;
@@ -224,6 +225,7 @@ static int psa_snprint_algorithm(char *buffer, size_t buffer_size,
     case PSA_ALG_MD4: append(&buffer, buffer_size, &required_size, "PSA_ALG_MD4", 11); break;
     case PSA_ALG_MD5: append(&buffer, buffer_size, &required_size, "PSA_ALG_MD5", 11); break;
     case PSA_ALG_OFB: append(&buffer, buffer_size, &required_size, "PSA_ALG_OFB", 11); break;
+    case PSA_ALG_PAKE_JPAKE: append(&buffer, buffer_size, &required_size, "PSA_ALG_PAKE_JPAKE", 18); break;
     case PSA_ALG_PBKDF2_AES_CMAC_PRF_128: append(&buffer, buffer_size, &required_size, "PSA_ALG_PBKDF2_AES_CMAC_PRF_128", 31); break;
     case PSA_ALG_PBKDF2_HMAC_BASE: append(&buffer, buffer_size, &required_size, "PSA_ALG_PBKDF2_HMAC_BASE", 24); break;
     case PSA_ALG_PURE_EDDSA: append(&buffer, buffer_size, &required_size, "PSA_ALG_PURE_EDDSA", 18); break;
