@@ -47,6 +47,7 @@ class PSAMacroEnumerator:
         self.mac_algorithms = set() #type: Set[str]
         self.ka_algorithms = set() #type: Set[str]
         self.kdf_algorithms = set() #type: Set[str]
+        self.pake_algorithms = set() #type: Set[str]
         self.aead_algorithms = set() #type: Set[str]
         # macro name -> list of argument names
         self.argspecs = {} #type: Dict[str, List[str]]
