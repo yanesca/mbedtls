@@ -104,6 +104,7 @@ class Inputs:
         self.mac_algorithms = set(['0x03007fff'])
         self.ka_algorithms = set(['0x09fc0000'])
         self.kdf_algorithms = set(['0x080000ff'])
+        self.pake_algorithms = set(['0x0a0000ff'])
         # For AEAD algorithms, the only variability is over the tag length,
         # and this only applies to known algorithms, so don't test an
         # unknown algorithm.
@@ -135,6 +136,7 @@ class Inputs:
             'aead_algorithm': [self.aead_algorithms],
             'key_derivation_algorithm': [self.kdf_algorithms],
             'key_agreement_algorithm': [self.ka_algorithms],
+            'pake_algorithm': [self.pake_algorithms],
             'asymmetric_signature_algorithm': [],
             'asymmetric_signature_wildcard': [self.algorithms],
             'asymmetric_encryption_algorithm': [],
