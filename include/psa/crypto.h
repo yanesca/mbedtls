@@ -4111,7 +4111,7 @@ psa_status_t psa_pake_setup(psa_pake_operation_t *operation,
  *         results in this error code.
  */
 psa_status_t psa_pake_output(psa_pake_operation_t *operation,
-                             psa_pake_data_t type,
+                             psa_pake_step_t type,
                              uint8_t *output,
                              size_t output_size,
                              size_t *output_length);
@@ -4151,7 +4151,7 @@ psa_status_t psa_pake_output(psa_pake_operation_t *operation,
  *         results in this error code.
  */
 psa_status_t psa_pake_input(psa_pake_operation_t *operation,
-                             psa_pake_data_t type,
+                             psa_pake_step_t type,
                              uint8_t *input,
                              size_t input_length);
 
