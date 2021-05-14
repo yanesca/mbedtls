@@ -4220,6 +4220,8 @@ psa_status_t psa_pake_setup(psa_pake_operation_t *operation,
  *
  * \retval #PSA_SUCCESS
  *         Success.
+ * \retval #PSA_ERROR_BAD_STATE
+ *         The operation state is not valid (it must have been set up.)
  * \retval #PSA_ERROR_CORRUPTION_DETECTED
  * \retval #PSA_ERROR_INVALID_HANDLE
  * \retval #PSA_ERROR_COMMUNICATION_FAILURE
@@ -4244,6 +4246,16 @@ psa_status_t psa_pake_set_password_key(psa_pake_operation_t *operation,
  * accessed through the key derivation interface and the result can be supplied
  * to the PAKE operation in the form of a key derivation object.
  *
+ * This function draws bytes from a key derivation algorithm and sets those
+ * bytes as a password for the password-authenticated key exchange.  If you
+ * view the key derivation's output as a stream of bytes, this function
+ * destructively reads the requested number of bytes from the stream.
+ * The key derivation operation's capacity decreases by the number of bytes read.
+ *
+ * If this function returns #PSA_ERROR_INVALID_ARGUMENT, \p key_derivation
+ * enters an error state and must be aborted by calling
+ * psa_key_derivation_abort().
+ *
  * \param[in,out] operation       The operation object to set the password for.
  *                                It must have been set up by psa_pake_setup()
  *                                and not yet in use.
@@ -4255,6 +4267,11 @@ psa_status_t psa_pake_set_password_key(psa_pake_operation_t *operation,
  *
  * \retval #PSA_SUCCESS
  *         Success.
+ * \retval #PSA_ERROR_BAD_STATE
+ *         The operation state is not valid (it must have been set up.)
+ * \retval #PSA_ERROR_INSUFFICIENT_DATA
+ *         The \p key_derivation operation's capacity was less than
+ *         \p input_length bytes.
  * \retval #PSA_ERROR_CORRUPTION_DETECTED
  * \retval #PSA_ERROR_INVALID_HANDLE
  * \retval #PSA_ERROR_COMMUNICATION_FAILURE
@@ -4262,8 +4279,8 @@ psa_status_t psa_pake_set_password_key(psa_pake_operation_t *operation,
  * \retval #PSA_ERROR_STORAGE_FAILURE
  * \retval #PSA_ERROR_NOT_PERMITTED
  * \retval #PSA_ERROR_INVALID_ARGUMENT
- *         \p key_derivation is not ready for a call to
- *         psa_key_derivation_output_bytes().
+ *         The call to psa_key_derivation_output_bytes() returned something
+ *         other than #PSA_ERROR_INSUFFICIENT_DATA.
  * \retval #PSA_ERROR_BAD_STATE
  *         The library has not been previously initialized by psa_crypto_init().
  *         It is implementation-dependent whether a failure to initialize
@@ -4292,7 +4309,7 @@ psa_status_t psa_pake_set_password_mhf(psa_pake_operation_t *operation,
  * \retval #PSA_SUCCESS
  *         Success.
  * \retval #PSA_ERROR_BAD_STATE
- *         The operation state is not valid.
+ *         The operation state is not valid (it must have been set up.)
  * \retval #PSA_ERROR_INSUFFICIENT_MEMORY
  * \retval #PSA_ERROR_COMMUNICATION_FAILURE
  * \retval #PSA_ERROR_HARDWARE_FAILURE
@@ -4327,7 +4344,7 @@ psa_status_t psa_pake_set_user(psa_pake_operation_t *operation,
  * \retval #PSA_SUCCESS
  *         Success.
  * \retval #PSA_ERROR_BAD_STATE
- *         The operation state is not valid.
+ *         The operation state is not valid (it must have been set up.)
  * \retval #PSA_ERROR_NOT_SUPPORTED
  *         The algorithm doesn't associate a second identity with the session.
  * \retval #PSA_ERROR_INSUFFICIENT_MEMORY
