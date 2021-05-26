@@ -93,10 +93,10 @@ struct psa_hash_operation_s
 };
 
 #define PSA_HASH_OPERATION_INIT {0, {0}}
-static inline struct psa_hash_operation_s psa_hash_operation_init( void )
+static inline struct psa_hash_operation_s psa_hash_operation_init(void)
 {
     const struct psa_hash_operation_s v = PSA_HASH_OPERATION_INIT;
-    return( v );
+    return(v);
 }
 
 struct psa_cipher_operation_s
@@ -118,10 +118,10 @@ struct psa_cipher_operation_s
 };
 
 #define PSA_CIPHER_OPERATION_INIT {0, 0, 0, 0, {0}}
-static inline struct psa_cipher_operation_s psa_cipher_operation_init( void )
+static inline struct psa_cipher_operation_s psa_cipher_operation_init(void)
 {
     const struct psa_cipher_operation_s v = PSA_CIPHER_OPERATION_INIT;
-    return( v );
+    return(v);
 }
 
 /* Include the context definition for the compiled-in drivers for the composite
@@ -143,10 +143,10 @@ struct psa_mac_operation_s
 };
 
 #define PSA_MAC_OPERATION_INIT {0, 0, 0, {0}}
-static inline struct psa_mac_operation_s psa_mac_operation_init( void )
+static inline struct psa_mac_operation_s psa_mac_operation_init(void)
 {
     const struct psa_mac_operation_s v = PSA_MAC_OPERATION_INIT;
-    return( v );
+    return(v);
 }
 
 struct psa_aead_operation_s
@@ -164,10 +164,10 @@ struct psa_aead_operation_s
 };
 
 #define PSA_AEAD_OPERATION_INIT {0, 0, 0, 0, 0, {0}}
-static inline struct psa_aead_operation_s psa_aead_operation_init( void )
+static inline struct psa_aead_operation_s psa_aead_operation_init(void)
 {
     const struct psa_aead_operation_s v = PSA_AEAD_OPERATION_INIT;
-    return( v );
+    return(v);
 }
 
 #if defined(MBEDTLS_PSA_BUILTIN_ALG_HKDF)
@@ -223,7 +223,7 @@ typedef struct psa_tls12_prf_key_derivation_s
 
     uint8_t Ai[PSA_HASH_MAX_SIZE];
 
-    /* `HMAC_hash( prk, A(i) + seed )` in the notation of RFC 5246, Sect. 5. */
+    /* `HMAC_hash(prk, A(i) + seed)` in the notation of RFC 5246, Sect. 5. */
     uint8_t output_block[PSA_HASH_MAX_SIZE];
 } psa_tls12_prf_key_derivation_t;
 #endif /* MBEDTLS_PSA_BUILTIN_ALG_TLS12_PRF) ||
@@ -250,10 +250,10 @@ struct psa_key_derivation_s
 
 /* This only zeroes out the first byte in the union, the rest is unspecified. */
 #define PSA_KEY_DERIVATION_OPERATION_INIT {0, 0, 0, {0}}
-static inline struct psa_key_derivation_s psa_key_derivation_operation_init( void )
+static inline struct psa_key_derivation_s psa_key_derivation_operation_init(void)
 {
     const struct psa_key_derivation_s v = PSA_KEY_DERIVATION_OPERATION_INIT;
-    return( v );
+    return(v);
 }
 
 struct psa_key_policy_s
@@ -265,10 +265,10 @@ struct psa_key_policy_s
 typedef struct psa_key_policy_s psa_key_policy_t;
 
 #define PSA_KEY_POLICY_INIT {0, 0, 0}
-static inline struct psa_key_policy_s psa_key_policy_init( void )
+static inline struct psa_key_policy_s psa_key_policy_init(void)
 {
     const struct psa_key_policy_s v = PSA_KEY_POLICY_INIT;
-    return( v );
+    return(v);
 }
 
 /* The type used internally for key sizes.
@@ -276,7 +276,7 @@ static inline struct psa_key_policy_s psa_key_policy_init( void )
 typedef uint16_t psa_key_bits_t;
 /* The maximum value of the type used to represent bit-sizes.
  * This is used to mark an invalid key size. */
-#define PSA_KEY_BITS_TOO_LARGE ( (psa_key_bits_t) ( -1 ) )
+#define PSA_KEY_BITS_TOO_LARGE          ((psa_key_bits_t)-1)
 /* The maximum size of a key in bits.
  * Currently defined as the maximum that can be represented, rounded down
  * to a whole number of bytes.
@@ -294,18 +294,18 @@ typedef uint16_t psa_key_bits_t;
 typedef uint16_t psa_key_attributes_flag_t;
 
 #define MBEDTLS_PSA_KA_FLAG_HAS_SLOT_NUMBER     \
-    ( (psa_key_attributes_flag_t) 0x0001 )
+    ((psa_key_attributes_flag_t) 0x0001)
 
 /* A mask of key attribute flags used externally only.
  * Only meant for internal checks inside the library. */
 #define MBEDTLS_PSA_KA_MASK_EXTERNAL_ONLY (      \
         MBEDTLS_PSA_KA_FLAG_HAS_SLOT_NUMBER |    \
-        0 )
+        0)
 
 /* A mask of key attribute flags used both internally and externally.
  * Currently there aren't any. */
 #define MBEDTLS_PSA_KA_MASK_DUAL_USE (          \
-        0 )
+        0)
 
 typedef struct
 {
@@ -335,37 +335,37 @@ struct psa_key_attributes_s
 #define PSA_KEY_ATTRIBUTES_INIT {PSA_CORE_KEY_ATTRIBUTES_INIT, NULL, 0}
 #endif
 
-static inline struct psa_key_attributes_s psa_key_attributes_init( void )
+static inline struct psa_key_attributes_s psa_key_attributes_init(void)
 {
     const struct psa_key_attributes_s v = PSA_KEY_ATTRIBUTES_INIT;
-    return( v );
+    return(v);
 }
 
-static inline void psa_set_key_id( psa_key_attributes_t *attributes,
-                                   mbedtls_svc_key_id_t key )
+static inline void psa_set_key_id(psa_key_attributes_t *attributes,
+                                   mbedtls_svc_key_id_t key)
 {
     psa_key_lifetime_t lifetime = attributes->core.lifetime;
 
     attributes->core.id = key;
 
-    if( PSA_KEY_LIFETIME_IS_VOLATILE( lifetime ) )
+    if(PSA_KEY_LIFETIME_IS_VOLATILE(lifetime))
     {
         attributes->core.lifetime =
             PSA_KEY_LIFETIME_FROM_PERSISTENCE_AND_LOCATION(
                 PSA_KEY_LIFETIME_PERSISTENT,
-                PSA_KEY_LIFETIME_GET_LOCATION( lifetime ) );
+                PSA_KEY_LIFETIME_GET_LOCATION(lifetime));
     }
 }
 
 static inline mbedtls_svc_key_id_t psa_get_key_id(
     const psa_key_attributes_t *attributes)
 {
-    return( attributes->core.id );
+    return(attributes->core.id);
 }
 
 #ifdef MBEDTLS_PSA_CRYPTO_KEY_ID_ENCODES_OWNER
-static inline void mbedtls_set_key_owner_id( psa_key_attributes_t *attributes,
-                                             mbedtls_key_owner_id_t owner )
+static inline void mbedtls_set_key_owner_id(psa_key_attributes_t *attributes,
+                                             mbedtls_key_owner_id_t owner)
 {
     attributes->core.id.owner = owner;
 }
@@ -375,7 +375,7 @@ static inline void psa_set_key_lifetime(psa_key_attributes_t *attributes,
                                         psa_key_lifetime_t lifetime)
 {
     attributes->core.lifetime = lifetime;
-    if( PSA_KEY_LIFETIME_IS_VOLATILE( lifetime ) )
+    if(PSA_KEY_LIFETIME_IS_VOLATILE(lifetime))
     {
 #ifdef MBEDTLS_PSA_CRYPTO_KEY_ID_ENCODES_OWNER
         attributes->core.id.key_id = 0;
@@ -388,7 +388,7 @@ static inline void psa_set_key_lifetime(psa_key_attributes_t *attributes,
 static inline psa_key_lifetime_t psa_get_key_lifetime(
     const psa_key_attributes_t *attributes)
 {
-    return( attributes->core.lifetime );
+    return(attributes->core.lifetime);
 }
 
 static inline void psa_set_key_usage_flags(psa_key_attributes_t *attributes,
@@ -400,7 +400,7 @@ static inline void psa_set_key_usage_flags(psa_key_attributes_t *attributes,
 static inline psa_key_usage_t psa_get_key_usage_flags(
     const psa_key_attributes_t *attributes)
 {
-    return( attributes->core.policy.usage );
+    return(attributes->core.policy.usage);
 }
 
 static inline void psa_set_key_algorithm(psa_key_attributes_t *attributes,
@@ -412,7 +412,7 @@ static inline void psa_set_key_algorithm(psa_key_attributes_t *attributes,
 static inline psa_algorithm_t psa_get_key_algorithm(
     const psa_key_attributes_t *attributes)
 {
-    return( attributes->core.policy.alg );
+    return(attributes->core.policy.alg);
 }
 
 /* This function is declared in crypto_extra.h, which comes after this
@@ -425,7 +425,7 @@ psa_status_t psa_set_key_domain_parameters(psa_key_attributes_t *attributes,
 static inline void psa_set_key_type(psa_key_attributes_t *attributes,
                                     psa_key_type_t type)
 {
-    if( attributes->domain_parameters == NULL )
+    if(attributes->domain_parameters == NULL)
     {
         /* Common case: quick path */
         attributes->core.type = type;
@@ -436,20 +436,20 @@ static inline void psa_set_key_type(psa_key_attributes_t *attributes,
          * Ignore any errors which may arise due to type requiring
          * non-default domain parameters, since this function can't
          * report errors. */
-        (void) psa_set_key_domain_parameters( attributes, type, NULL, 0 );
+        (void) psa_set_key_domain_parameters(attributes, type, NULL, 0);
     }
 }
 
 static inline psa_key_type_t psa_get_key_type(
     const psa_key_attributes_t *attributes)
 {
-    return( attributes->core.type );
+    return(attributes->core.type);
 }
 
 static inline void psa_set_key_bits(psa_key_attributes_t *attributes,
                                     size_t bits)
 {
-    if( bits > PSA_MAX_KEY_BITS )
+    if(bits > PSA_MAX_KEY_BITS)
         attributes->core.bits = PSA_KEY_BITS_TOO_LARGE;
     else
         attributes->core.bits = (psa_key_bits_t) bits;
@@ -458,7 +458,7 @@ static inline void psa_set_key_bits(psa_key_attributes_t *attributes,
 static inline size_t psa_get_key_bits(
     const psa_key_attributes_t *attributes)
 {
-    return( attributes->core.bits );
+    return(attributes->core.bits);
 }
 
 struct psa_pake_cipher_suite_s
@@ -473,14 +473,14 @@ struct psa_pake_cipher_suite_s
 static inline psa_algorithm_t psa_pake_cs_get_algorithm(
     const psa_pake_cipher_suite_t *cipher_suite)
 {
-    return( cipher_suite->algorithm );
+    return(cipher_suite->algorithm);
 }
 
 static inline void psa_pake_cs_set_algorithm(
     psa_pake_cipher_suite_t *cipher_suite,
     psa_algorithm_t algorithm)
 {
-    if( !PSA_ALG_IS_PAKE(algorithm) )
+    if(!PSA_ALG_IS_PAKE(algorithm))
         cipher_suite->algorithm = 0;
     else
         cipher_suite->algorithm = algorithm;
@@ -489,8 +489,8 @@ static inline void psa_pake_cs_set_algorithm(
 static inline psa_pake_primitive_t psa_pake_cs_get_primitive(
     const psa_pake_cipher_suite_t *cipher_suite)
 {
-    return( PSA_PAKE_PRIMITIVE( cipher_suite->type, cipher_suite->family,
-                cipher_suite->bits) );
+    return(PSA_PAKE_PRIMITIVE(cipher_suite->type, cipher_suite->family,
+                cipher_suite->bits));
 }
 
 static inline void psa_pake_cs_set_primitive(
@@ -498,21 +498,21 @@ static inline void psa_pake_cs_set_primitive(
     psa_pake_primitive_t primitive)
 {
     cipher_suite->type = (psa_pake_primitive_type_t) (primitive >> 24);
-    cipher_suite->family = (psa_pake_family_t) ( 0xFF & (primitive >> 16) );
-    cipher_suite->bits = (uint16_t) ( 0xFFFF & primitive );
+    cipher_suite->family = (psa_pake_family_t) (0xFF & (primitive >> 16));
+    cipher_suite->bits = (uint16_t) (0xFFFF & primitive);
 }
 
 static inline psa_algorithm_t psa_pake_cs_get_hash(
     const psa_pake_cipher_suite_t *cipher_suite)
 {
-    return( cipher_suite->hash );
+    return(cipher_suite->hash);
 }
 
 static inline void psa_pake_cs_set_hash(
     psa_pake_cipher_suite_t *cipher_suite,
     psa_algorithm_t hash)
 {
-    if( !PSA_ALG_IS_HASH(hash) )
+    if(!PSA_ALG_IS_HASH(hash))
         cipher_suite->hash = 0;
     else
         cipher_suite->hash = hash;
@@ -530,10 +530,10 @@ struct psa_pake_operation_s
 
 /* This only zeroes out the first byte in the union, the rest is unspecified. */
 #define PSA_PAKE_OPERATION_INIT {0, {0}}
-static inline struct psa_pake_operation_s psa_pake_operation_init( void )
+static inline struct psa_pake_operation_s psa_pake_operation_init(void)
 {
     const struct psa_pake_operation_s v = PSA_PAKE_OPERATION_INIT;
-    return( v );
+    return(v);
 }
 
 #ifdef __cplusplus
