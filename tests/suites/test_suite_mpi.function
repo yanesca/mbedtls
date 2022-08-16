@@ -1,6 +1,8 @@
 /* BEGIN_HEADER */
+#include "bignum_core.h"
 #include "mbedtls/bignum.h"
 #include "mbedtls/entropy.h"
+#include <string.h>
 
 #if MBEDTLS_MPI_MAX_BITS > 792
 #define MPI_MAX_BITS_LARGER_THAN_792
@@ -1409,6 +1411,43 @@ void mpi_random_fail( int min, data_t *bound_bytes, int expected_ret )
 exit:
     mbedtls_mpi_free( &upper_bound );
     mbedtls_mpi_free( &result );
+}
+/* END_CASE */
+
+/* BEGIN_CASE */
+void mbedtls_mpi_montg_init( char * input_N, char * input_mm )
+{
+    mbedtls_mpi N, mm;
+
+    mbedtls_mpi_init( &N );
+    mbedtls_mpi_init( &mm );
+
+    TEST_EQUAL( mbedtls_test_read_mpi( &N, input_N ), 0 );
+    TEST_EQUAL( mbedtls_test_read_mpi( &mm, input_mm ), 0 );
+
+    /* The MPI encoding of mm should be 1 limb (sizeof(mbedtls_mpi_uint) == 8) or
+     * 2 limbs (sizeof(mbedtls_mpi_uint) == 4).
+     *
+     * The data file contains the expected result for sizeof(mbedtls_mpi_uint) == 8;
+     * for sizeof(mbedtls_mpi_uint) == 4 it's just the LSW of this.
+     */
+    TEST_ASSERT( mm.n == 1  || mm.n == 2);
+
+    /* All of the inputs are +ve (or zero) */
+    TEST_EQUAL( N.s, 1 );
+    TEST_EQUAL( mm.s, 1 );
+
+    mbedtls_mpi_uint mm_actual = 0;
+
+    /* mbedtls_mpi_montg_init() is void, so just call it */
+    mbedtls_mpi_montg_init( &mm_actual, &N );
+
+    /* Check we got the correct result */
+    TEST_EQUAL( mm_actual, mm.p[0] );
+
+exit:
+    mbedtls_mpi_free( &N );
+    mbedtls_mpi_free( &mm );
 }
 /* END_CASE */
 

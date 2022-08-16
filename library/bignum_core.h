@@ -42,7 +42,7 @@
  *                        This must be odd and have exactly \p n limbs.
  * \param[in]      n      The number of limbs in \p X, \p A, \p N.
  * \param          mm     The Montgomery constant for \p N: -N^-1 mod 2^ciL.
- *                        This can be calculated by `mpi_montg_init()`.
+ *                        This can be calculated by `mbedtls_mpi_montg_init()`.
  * \param[in,out]  T      Temporary storage of size at least 2*n+1 limbs.
  *                        Its initial content is unused and
  *                        its final content is indeterminate.
@@ -122,5 +122,14 @@ mbedtls_mpi_uint mbedtls_mpi_core_add_if( mbedtls_mpi_uint *d,
                                           const mbedtls_mpi_uint *r,
                                           size_t n,
                                           unsigned cond );
+
+/**
+ * \brief Calculate initialisation value for fast Montgomery modular
+ *        multiplication
+ *
+ * \param mm   Pointer to an mbedtls_mpi_uint to receive the result.
+ * \param N    Little-endian presentation of the modulus, which must be odd.
+ */
+void mbedtls_mpi_montg_init( mbedtls_mpi_uint *mm, const mbedtls_mpi *N );
 
 #endif /* MBEDTLS_BIGNUM_CORE_H */

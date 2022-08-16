@@ -1760,9 +1760,11 @@ int mbedtls_mpi_mod_int( mbedtls_mpi_uint *r, const mbedtls_mpi *A, mbedtls_mpi_
 }
 
 /*
- * Fast Montgomery initialization (thanks to Tom St Denis)
+ * Fast Montgomery initialization (thanks to Tom St Denis).
+ *
+ * Would be static, but we want to test it.
  */
-static void mpi_montg_init( mbedtls_mpi_uint *mm, const mbedtls_mpi *N )
+void mbedtls_mpi_montg_init( mbedtls_mpi_uint *mm, const mbedtls_mpi *N )
 {
     mbedtls_mpi_uint x, m0 = N->p[0];
     unsigned int i;
@@ -1929,7 +1931,7 @@ int mbedtls_mpi_exp_mod( mbedtls_mpi *X, const mbedtls_mpi *A,
     /*
      * Init temps and window size
      */
-    mpi_montg_init( &mm, N );
+    mbedtls_mpi_montg_init( &mm, N );
     mbedtls_mpi_init( &RR ); mbedtls_mpi_init( &T );
     mbedtls_mpi_init( &Apos );
     mbedtls_mpi_init( &WW );
