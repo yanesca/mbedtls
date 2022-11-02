@@ -552,6 +552,8 @@ cleanup:
 
 /* BEGIN MERGE SLOT 3 */
 
+// Use slot 3
+
 /* END MERGE SLOT 3 */
 
 /* BEGIN MERGE SLOT 4 */
