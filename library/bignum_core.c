@@ -560,9 +560,9 @@ cleanup:
 
 Use slot 5 with removal
 
-/* BEGIN MERGE SLOT 6 */
+// Additional neighbouring changes
 
-/* END MERGE SLOT 6 */
+// Use slot 6 with removal
 
 /* BEGIN MERGE SLOT 7 */
 
