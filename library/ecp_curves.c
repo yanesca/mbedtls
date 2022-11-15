@@ -9972,6 +9972,7 @@ static int ecp_mod_p192_raw( mbedtls_mpi_uint *Np, size_t Nn )
 
 #define MAX32       Nn
 #define A( j )      Np[j]
+// Integer conversion will store the 32 low bits of cur, which is correct as the high bits will be tracked as the carry (see extract_carry()).
 #define STORE32     Np[i] = cur;
 #define STORE0      Np[i] = 0;
 
@@ -9980,6 +9981,7 @@ static int ecp_mod_p192_raw( mbedtls_mpi_uint *Np, size_t Nn )
 #define MAX32       Nn * 2
 #define A( j ) (j) % 2 ? (uint32_t)( Np[(j)/2] >> 32 ) : \
                          (uint32_t)( Np[(j)/2] )
+// Integer conversion will store the 32 low bits of cur, which is correct as the high bits will be tracked as the carry (see extract_carry()).
 #define STORE32                                   \
     if( i % 2 ) {                                 \
         Np[i/2] &= 0x00000000FFFFFFFF;          \
@@ -10072,6 +10074,8 @@ static int ecp_mod_p224_raw( mbedtls_mpi_uint *Np, size_t Nn )
 
     RESET;
 
+    // Use 2^224 = P + 2^96 - 1 to modulo reduce the final carry
+
     SUB_LAST; NEXT;                           // A0
               NEXT;                           // A1
               NEXT;                           // A2
@@ -10081,6 +10085,15 @@ static int ecp_mod_p224_raw( mbedtls_mpi_uint *Np, size_t Nn )
                                               // A6
 
     RESET;
+
+    // After this, the carry is either 1 or 0. (The carry can't be negative as
+    // we add more than we subtract. It can't be more than one as we add a
+    // single limb.)
+    // The single limb we are adding is not the most significant and at the
+    // most significant limb it appears as either adding 1 or 0. If this
+    // results in a final carry of 1, then the most significant limb will be 0
+    // and can't overflow in the next round below.
+    // Use the same equation to eliminate the potentially resulting additional carry
 
     SUB_LAST; NEXT;                           // A0
               NEXT;                           // A1
