@@ -10395,6 +10395,10 @@ static int ecp_mod_p255_raw( mbedtls_mpi_uint *N_p, size_t N_n )
     N_p[P255_WIDTH-1] <<= 1; N_p[P255_WIDTH-1] >>= 1;
     (void) MPI_CORE(add_int)( N_p, N_p, carry, P255_WIDTH );
 
+    /* At this point the first bit still might be 1 as we did an addition after
+     * we cleared it. What is guaranteed is <2p and not <p
+     */
+
     return( 0 );
 }
 #endif /* MBEDTLS_ECP_DP_CURVE25519_ENABLED */
@@ -10545,6 +10549,11 @@ static inline int ecp_mod_koblitz( mbedtls_mpi *N, mbedtls_mpi_uint *Rp, size_t 
     /* N = A0 + R * A1 */
     MBEDTLS_MPI_CHK( mbedtls_mpi_mul_mpi( &M, &M, &R ) );
     MBEDTLS_MPI_CHK( mbedtls_mpi_add_abs( N, N, &M ) );
+
+    /* At this point N might be 1 bit longer than what we have available in the
+     * fixed width setting, conditionally adding R should put it into range.
+     * (The carry was created by adding a 66 bit number adding another 33 bit
+     * number won't result in a carry again in a 192+ bit number) */
 
 cleanup:
     return( ret );
