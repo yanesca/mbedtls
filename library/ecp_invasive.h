@@ -78,6 +78,12 @@ int mbedtls_ecp_gen_privkey_mx(size_t n_bits,
 
 #if defined(MBEDTLS_ECP_DP_SECP521R1_ENABLED)
 
+/** Fast quasi-reduction modulo p521 = 2^521 - 1 (FIPS 186-3 D.2.5)
+ *
+ * \param[in,out]   N_p     The address of the MPI to be converted.
+ *                          Must have 2 * N - 1 limbs, where N is the modulus.
+ * \param[in]       N_n     The length of \p N_p in limbs.
+ */
 MBEDTLS_STATIC_TESTABLE
 int ecp_mod_p521_raw(mbedtls_mpi_uint *N_p, size_t N_n);
 
