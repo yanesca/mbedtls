@@ -4583,6 +4583,8 @@ static int ecp_mod_p256(mbedtls_mpi *);
 #endif
 #if defined(MBEDTLS_ECP_DP_SECP384R1_ENABLED)
 static int ecp_mod_p384(mbedtls_mpi *);
+MBEDTLS_STATIC_TESTABLE
+int mbedtls_ecp_mod_p384_raw(mbedtls_mpi_uint *N_p, size_t N_n);
 #endif
 #if defined(MBEDTLS_ECP_DP_SECP521R1_ENABLED)
 static int ecp_mod_p521(mbedtls_mpi *);
@@ -5098,6 +5100,101 @@ int mbedtls_ecp_mod_p224_raw(mbedtls_mpi_uint *X, size_t X_limbs)
 
 #endif /* MBEDTLS_ECP_DP_SECP224R1_ENABLED */
 
+#if defined(MBEDTLS_ECP_DP_SECP384R1_ENABLED)
+/*
+ * Fast quasi-reduction modulo p384 (FIPS 186-3 D.2.4)
+ */
+static int ecp_mod_p384(mbedtls_mpi *N)
+{
+    int ret = MBEDTLS_ERR_ERROR_CORRUPTION_DETECTED;
+    size_t expected_width = 2 * ((384 + biL - 1) / biL);
+    MBEDTLS_MPI_CHK(mbedtls_mpi_grow(N, expected_width));
+    ret = mbedtls_ecp_mod_p384_raw(N->p, expected_width);
+cleanup:
+    return ret;
+}
+
+MBEDTLS_STATIC_TESTABLE
+int mbedtls_ecp_mod_p384_raw(mbedtls_mpi_uint *X, size_t X_limbs)
+{
+    if (X_limbs != 2*((384 + biL - 1)/biL)) {
+        return MBEDTLS_ERR_ECP_BAD_INPUT_DATA;
+    }
+
+    INIT(384);
+
+    ADD(12); ADD(21); ADD(20);
+    SUB(23);                                              NEXT;   // A0
+
+    ADD(13); ADD(22); ADD(23);
+    SUB(12); SUB(20);                                   NEXT;     // A1
+
+    ADD(14); ADD(23);
+    SUB(13); SUB(21);                                   NEXT;     // A2
+
+    ADD(15); ADD(12); ADD(20); ADD(21);
+    SUB(14); SUB(22); SUB(23);                        NEXT;       // A3
+
+    ADD(21); ADD(21); ADD(16); ADD(13); ADD(12); ADD(20); ADD(22);
+    SUB(15); SUB(23); SUB(23);                        NEXT;       // A4
+
+    ADD(22); ADD(22); ADD(17); ADD(14); ADD(13); ADD(21); ADD(23);
+    SUB(16);                                              NEXT;   // A5
+
+    ADD(23); ADD(23); ADD(18); ADD(15); ADD(14); ADD(22);
+    SUB(17);                                              NEXT;   // A6
+
+    ADD(19); ADD(16); ADD(15); ADD(23);
+    SUB(18);                                              NEXT;   // A7
+
+    ADD(20); ADD(17); ADD(16);
+    SUB(19);                                              NEXT;   // A8
+
+    ADD(21); ADD(18); ADD(17);
+    SUB(20);                                              NEXT;   // A9
+
+    ADD(22); ADD(19); ADD(18);
+    SUB(21);                                              NEXT;   // A10
+
+    ADD(23); ADD(20); ADD(19);
+    SUB(22);                                                      // A11
+
+    RESET;
+
+    ADD_LAST; NEXT;                                               // A0
+    SUB_LAST; NEXT;                                               // A1
+    NEXT;                                                         // A2
+    ADD_LAST; NEXT;                                               // A3
+    ADD_LAST; NEXT;                                               // A4
+    NEXT;                                                         // A5
+    NEXT;                                                         // A6
+    NEXT;                                                         // A7
+    NEXT;                                                         // A8
+    NEXT;                                                         // A9
+    NEXT;                                                         // A10
+                                                                  // A11
+
+    RESET;
+
+    ADD_LAST; NEXT;                                               // A0
+    SUB_LAST; NEXT;                                               // A1
+    NEXT;                                                         // A2
+    ADD_LAST; NEXT;                                               // A3
+    ADD_LAST; NEXT;                                               // A4
+    NEXT;                                                         // A5
+    NEXT;                                                         // A6
+    NEXT;                                                         // A7
+    NEXT;                                                         // A8
+    NEXT;                                                         // A9
+    NEXT;                                                         // A10
+                                                                  // A11
+
+    LAST;
+
+    return 0;
+}
+#endif /* MBEDTLS_ECP_DP_SECP384R1_ENABLED */
+
 #undef LOAD32
 #undef MAX32
 #undef A
@@ -5118,8 +5215,7 @@ int mbedtls_ecp_mod_p224_raw(mbedtls_mpi_uint *X, size_t X_limbs)
           MBEDTLS_ECP_DP_SECP256R1_ENABLED ||
           MBEDTLS_ECP_DP_SECP384R1_ENABLED */
 
-#if defined(MBEDTLS_ECP_DP_SECP256R1_ENABLED) ||   \
-    defined(MBEDTLS_ECP_DP_SECP384R1_ENABLED)
+#if defined(MBEDTLS_ECP_DP_SECP256R1_ENABLED)
 /*
  * The reader is advised to first understand ecp_mod_p192() since the same
  * general structure is used here, but with additional complications:
@@ -5276,55 +5372,6 @@ cleanup:
     return ret;
 }
 #endif /* MBEDTLS_ECP_DP_SECP256R1_ENABLED */
-
-#if defined(MBEDTLS_ECP_DP_SECP384R1_ENABLED)
-/*
- * Fast quasi-reduction modulo p384 (FIPS 186-3 D.2.4)
- */
-static int ecp_mod_p384(mbedtls_mpi *N)
-{
-    INIT(384);
-
-    ADD(12); ADD(21); ADD(20);
-    SUB(23);                                              NEXT;   // A0
-
-    ADD(13); ADD(22); ADD(23);
-    SUB(12); SUB(20);                                   NEXT;     // A2
-
-    ADD(14); ADD(23);
-    SUB(13); SUB(21);                                   NEXT;     // A2
-
-    ADD(15); ADD(12); ADD(20); ADD(21);
-    SUB(14); SUB(22); SUB(23);                        NEXT;       // A3
-
-    ADD(21); ADD(21); ADD(16); ADD(13); ADD(12); ADD(20); ADD(22);
-    SUB(15); SUB(23); SUB(23);                        NEXT;       // A4
-
-    ADD(22); ADD(22); ADD(17); ADD(14); ADD(13); ADD(21); ADD(23);
-    SUB(16);                                              NEXT;   // A5
-
-    ADD(23); ADD(23); ADD(18); ADD(15); ADD(14); ADD(22);
-    SUB(17);                                              NEXT;   // A6
-
-    ADD(19); ADD(16); ADD(15); ADD(23);
-    SUB(18);                                              NEXT;   // A7
-
-    ADD(20); ADD(17); ADD(16);
-    SUB(19);                                              NEXT;   // A8
-
-    ADD(21); ADD(18); ADD(17);
-    SUB(20);                                              NEXT;   // A9
-
-    ADD(22); ADD(19); ADD(18);
-    SUB(21);                                              NEXT;   // A10
-
-    ADD(23); ADD(20); ADD(19);
-    SUB(22);                                              LAST;   // A11
-
-cleanup:
-    return ret;
-}
-#endif /* MBEDTLS_ECP_DP_SECP384R1_ENABLED */
 
 #undef A
 #undef LOAD32
