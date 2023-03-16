@@ -5157,24 +5157,40 @@ int mbedtls_ecp_mod_p384_raw(mbedtls_mpi_uint *X, size_t X_limbs)
     SUB(21);                                                NEXT; // A10
 
     ADD(23); ADD(20); ADD(19);
+              // c + A11 = 2*INT32_MAX + 1
+              // this can't happen as both c <= INT32_MAX and A11 <= INT32_MAX
     SUB(22);                                                      // A11
-
+              // c=1 A11=INT32_MAX
     RESET;
 
     /* Use 2^384 = P + 2^128 + 2^96 - 2^32 + 1 to modulo reduce the final carry */
+              // c, A0 can be anything, last_c=1
     ADD_LAST; NEXT;                                               // A0
+              // c, A1 can be anything, last_c=1
     SUB_LAST; NEXT;                                               // A1
+              // c, A2 can be anything, last_c=1
     ;         NEXT;                                               // A2
+              // A2 + c + last_c > 0, last_c=1
     ADD_LAST; NEXT;                                               // A3
+              // c=0 A4=INT32_MAX last_c=1
+              // c=1 A4=INT32_MAX-1 last_c=1
     ADD_LAST; NEXT;                                               // A4
+              // c=1 A5=INT32_MAX
     ;         NEXT;                                               // A5
+              // c=1 A6=INT32_MAX
     ;         NEXT;                                               // A6
+              // c=1 A7=INT32_MAX
     ;         NEXT;                                               // A7
+              // c=1 A8=INT32_MAX
     ;         NEXT;                                               // A8
+              // c=1 A9=INT32_MAX
     ;         NEXT;                                               // A9
+              // c=1 A10=INT32_MAX
     ;         NEXT;                                               // A10
+              // c=1 A11=INT32_MAX
                                                                   // A11
 
+    // assume c = 1
     RESET;
 
     ADD_LAST; NEXT;                                               // A0
