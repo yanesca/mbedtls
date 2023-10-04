@@ -2000,6 +2000,18 @@ component_test_valgrind_constant_flow_psa () {
     make memcheck
 }
 
+component_test_tsan () {
+    msg "build: TSan (clang)"
+    scripts/config.py set MBEDTLS_THREADING_C
+    scripts/config.py set MBEDTLS_THREADING_PTHREAD
+
+    CC=clang cmake -D CMAKE_BUILD_TYPE:String=TSan .
+    make
+
+    msg "test: main suites (TSan)"
+    make test
+}
+
 component_test_default_no_deprecated () {
     # Test that removing the deprecated features from the default
     # configuration leaves something consistent.
