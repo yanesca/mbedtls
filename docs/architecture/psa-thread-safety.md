@@ -362,3 +362,27 @@ Since we only have simple mutexes, locking the same mutex from the same thread i
 Releasing the mutex before a function call might introduce race conditions. Therefore might not be practical to take the mutex in low level access functions. If functions like that don't take the mutex, they need to rely on the caller to take it for them. These functions will document that the caller is required to hold the mutex.
 
 To avoid performance degradation, functions must not start expensive operations (eg. doing cryptography) while holding the mutex.
+
+### Testing
+
+#### Sanity Test
+
+The testing currently available in Mbed TLS is a sanity test behind the flag `MBEDTLS_TEST_MUTEX_USAGE`. The test framework wraps mutex abstraction functions and track state transitions and fail if they detect a function called in a bad state. No checks regarding the resources guarded.
+
+#### Static Analysis
+
+For static analysis we use Coverity Scan (free service), but there is no obvious indication that it would consider threading. Coverity SAST (proprietary tool) has some features regarding thread safety, but that is not within our capabilities.
+
+There are a multitude of other static analysis tools, none of which would be both a well established product and have clear indication of threading support.
+
+Clang Thread Safety Analysis (TSA) would be promising, but it only supports C++. There is a [third party tool](https://github.com/jhi/clang-thread-safety-analysis-for-c) to adapt TSA for C, but it seems to be unmaintained.
+
+#### Dynamic Analysis
+
+There are two Valgrind plugins for testing thread safety. They both can only work with pthreads. [DRD](https://valgrind.org/docs/manual/drd-manual.html) is the faster of the two, but [Helgrind](https://valgrind.org/docs/manual/hg-manual.html) has nicer output and claims that can detect potential issues (not just ones that occur during that particular execution).
+
+Clang Thread Sanitiser (TSan) works only with pthreads. (It supports C11 threads as well, but only for C++.) Can only find issues that happen at runtime. Included in the compiler, setting up tests is more convenient than for Valgrind.
+
+#### Plan
+
+Use TSan for testing to support development work and unit tests (see for example `ctr_drbg_threads` in `tests/suites/test_suite_ctr_drbg.function`). Add Helgrind at the first opportunity and take a deeper look at static analysis at some point in the future.
